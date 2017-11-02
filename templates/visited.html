@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Miner</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- Font Awesome cdn -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Font Awesome cdn -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="../static/css/normalize.css">
+  <link rel="stylesheet" href="../static/css/skeleton.css">
+  <link rel="stylesheet" href="../static/css/middle.css">
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="../static/images/favicon.png">
+
+  <!-- JS for Charts -->
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"></script>
+
+
+  <!-- Cant shift this, Overriding css -->
+ <style type="text/css">
+
+
+ button{
+    border-radius: 100px;
+  }
+  .question-wrapper{
+    border: 2px solid {{color}};
+    border-radius: 10px;
+    padding: 0px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0px;
+  }
+  #question{
+    padding: 0px;
+    text-align: center;
+    padding: 20px;
+    padding-bottom: 0px;
+    margin: 0px;
+    font-size: 32px;
+  }
+
+  #footerbuttons{
+    padding:5px;
+    color:grey;
+    margin-bottom: 0px; 
+    border: 0px;
+  }
+
+  #footerbuttons:hover{
+    font-size: 12px;
+  }
+
+  .options{
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    font-size: 15px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    border-radius: 30px;
+    border: 1px solid {{color}};
+  }
+
+  .optionsblock{
+    padding-top: 10px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  #next{
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  #projectname{
+    text-decoration:none;
+    text-align:center;
+    font-size:25px;
+    padding-bottom:0px;
+    color:{{color}};
+  }
+
+  </style>
+</head>
+<body>
+
+  <!-- Script for graph generation, can't shift this either cause of templating -->
+ <script>
+
+
+function drawBarValues()
+{
+  // render the value of the chart above the bar
+  var ctx = this.chart.ctx;
+  ctx.font = Chart.helpers.fontString(15, 'normal', Chart.defaults.global.defaultFontFamily);
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  // ctx.textBaseline = 'top';
+  var sum = 0;
+
+  this.data.datasets.forEach(function (dataset) {
+
+    //for number of votes
+    var votes = []
+    {% for i in data['choices'].values() %}
+
+    votes.push("{{i['votes']}}")
+
+    {% endfor %}
+    var totalvotes = Number("{{data['totalvotes']}}")
+
+    if(totalvotes == 0)
+    {
+      totalvotes = 1;
+    }
+  //for generating the values on the chart
+    for (var i = 0; i < dataset.data.length; i++) {
+      if(dataset.hidden === true && dataset._meta[Object.keys(dataset._meta)[0]].hidden !== false){ continue; }
+      var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+      if(votes[i] !== null){
+
+        var value = (votes[i] / totalvotes) * 100
+        ctx.fillText(Math.round(value,1) + "%", 160, model.y + 5);
+
+      }
+    }
+  });
+
+  var votecount = document.getElementById('votecount')
+  votecount.innerHTML = sum + " votes"
+}
+
+      function showstats(){
+
+            var totalvotes = Number("{{data['totalvotes']}}")
+
+            if(totalvotes > 0)
+            {
+              var options = document.getElementById('replace')
+              var chart = document.getElementById('chart')
+                options.style.display = "none";
+             
+                chart.style.display = "block";
+                //get the data from the python script by parsing:
+                  //for choices
+                  var labeldata = []
+                  {% for i in data['choices'].keys() %}
+
+                  labeldata.push("{{i}}")
+
+                  {% endfor %}
+                  //for number of votes
+                  var votes = []
+                  {% for i in data['choices'].values() %}
+
+                  votes.push("{{i['votes']}}")
+
+                  {% endfor %}
+
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'horizontalBar',
+    // The data for our dataset
+
+    data: {
+        labels: labeldata,
+        datasets: [{
+            label: "Votes",
+            backgroundColor: '{{color}}',
+            borderColor: 'rgb(24, 106, 59)',
+            data: votes,  //a,b
+        }]
+    },
+
+
+
+    // Configuration options go here
+    options: {
+      events: [],
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                },
+                gridLines: {
+                    color: "rgba(0, 0, 0, 0)"
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    display:false,
+                    beginAtZero:true
+                },gridLines: {
+                    color: "rgba(0, 0, 0, 0)",
+                }
+            }]
+        },
+        animation: {
+            onProgress: drawBarValues,
+      onComplete: drawBarValues,
+            duration:3000,
+            easing: "easeOutQuart"
+        },legend: {
+            display: false,
+            labels: {
+                fontColor: '#FFF'
+            }
+        }
+    }
+});
+            // document.getElementById('options').style.display = none;
+            document.getElementById('replace').innerHTML = document.getElementById('chart').innerHTML;
+
+     }
+     else{
+        document.getElementById('replace').innerHTML = "<h4 style = 'padding-top:20px;padding-left:20px;'>Your's is the first vote for this Question</h4>"
+     }
+
+     document.getElementById('newpoll').style.display = "none";
+  }
+
+     function disappear(){
+      document.getElementById("nextbutton").style.display = "none";
+     }
+    </script>
+
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <div style="padding-bottom:20px;">
+        <a href = "/" id ="projectname">Miner</a>
+        <a class="button u-pull-right" id = "newpoll" style="border:1px solid {{color}};" href="/addpoll">New Poll</a>
+        </div>
+        <div class = "question-wrapper">
+          <h4 id = "question">{{data['question']}}</h4>
+          <h6 id = "para">{{ data['totalvotes']}} Votes</h6>
+        </div>
+        <p align="center" style = "padding-top:10px;">
+        You have already voted for this Poll.
+        </p>
+        <div id = "replace">
+        <div class = "optionsblock">
+
+        </div>
+      </div>
+      </div>
+
+      <!-- Chart element for graphs -->
+      <div id= "chart" style="display:none;">
+        <div class="chart-container" style="position: relative;margin: auto;">
+          <canvas id="myChart"></canvas>
+        </div>
+        <p id = "votecount" style="color:#FFF;"></p>
+      </div>
+
+      <!-- next button -->
+      <div id = "next">
+        <a class="button button-primary" id = "nextbutton" href="/next" onclick = "disappear()" style="background-color:{{color}};border:1px solid {{color}};">Next</a>
+      </div>
+
+
+    </div>
+
+    
+    <footer class="footer" style = "text-align:center;padding-top:20px;">
+      <p style="text-decoration:none;">
+        <a class = "button" id = "footerbuttons" href = "/"><i style = "font-size:15px;" class="fa fa-home" aria-hidden="true"></i></a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/yourpolls">Your Polls</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/answeredpolls">Answered Polls</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/addpoll">New Poll</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons"  href = "/logout">Logout</a>
+      </p>  
+    </footer>
+
+    <!-- Just Show stats -->
+    <script type="text/javascript">
+
+      showstats();
+
+    </script>    
+
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Miner</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Font Awesome cdn -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="../static/css/normalize.css">
+  <link rel="stylesheet" href="../static/css/skeleton.css">
+  <link rel="stylesheet" href="../static/css/middle.css">
+
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="../static/images/favicon.png">
+
+  <!-- Recapcha API -->
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+
+  <style>
+ 
+  #box{
+    text-align: center;
+    vertical-align: middle;
+    padding:20px;
+    border: 2px solid {{color}};
+    border-radius: 12px;
+  }
+
+  .tabs{
+    border: 0px;
+    border-radius: 0px;
+  }
+
+  #logintab{
+    border-bottom:2px solid {{color}};
+  }
+
+  h4{
+    padding-top: 10px;
+  }
+
+  #recaptcha {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      transform:scale(0.77);
+      transform-origin:20% 20%;
+    }
+
+    .g-recaptcha {
+      margin-right: auto;
+      margin-left: auto;
+      background-color: transparent;
+      display: inline-block;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    
+  <div class = "row" style = "text-align:center;">
+    <p style = "text-align:center;font-size:25px;padding-bottom:0px;"><a style = "color:{{color}};text-decoration:none;" href = "/">Miner</a></p>
+    <p style="font-size:15px;">Miner is the place to vote and create polls anonymously.</p>
+  </div>
+      <div id = "box">
+          <div class = "row">
+            <button class = "tabs" id = "logintab" onclick="openOption('Login')">Login</button>
+            <button class = "tabs" id = "registertab" onclick="openOption('Register')">Register</button>
+          </div>
+          <div class = "row">
+          <div id="Login" class="section">
+            <h4>Login</h4>
+              <form class="twelve columns" method = "POST">
+                {{ lform.csrf_token }}
+                <div>
+                      {{ lform.lusername(placeholder="Username")}}
+                </div>
+                <div>
+                    {{ lform.lpassword(placeholder = "Password")}}
+                </div>
+              <button style = "background-color:{{color}};border:1px solid {{color}}" type="submit" class="button-primary" id = "submitButton" name = "btn" value = "login">Sign in</button>
+              </form>
+
+          </div>
+
+          <div id="Register" class="section" style="display:none">
+            <h4>Register</h4>
+            <form class="twelve columns" method = "POST">
+                {{ rform.csrf_token }}
+                <div>
+                      {{ rform.rusername(placeholder="Username")}}
+                </div>
+                <div>
+                    {{ rform.rpassword(placeholder = "Password")}}
+                </div>
+                <div id = "recaptcha" class = "u-cf">
+                    {{ rform.recaptcha }}
+                    </br>
+                </div>
+                  <button type="submit" class="button-primary" name = "btn" style = "background-color:{{color}};border:1px solid {{color}}" value = "register">Sign up</button>
+                <!-- This is for Recaptcha -->
+                  <!-- Recaptcha -->
+
+
+              </form>
+          </div>
+
+        <i class="fa fa-question-circle-o u-pull-right" aria-hidden="true" onmouseover = "showmsg()" onmouseout = "hidemsg()"></i>
+        <div id = "msg" style = "display:none;">
+          User Database is maintained to ensure uniquenuess in votes
+        </div>
+        <div>
+          {% if errors != "" %}
+            {{errors}}
+          {% endif %}
+        </div>
+      </div>
+      
+  </div>
+
+  <!-- JS for showing msg and Tab selection -->
+  <script type="text/javascript">
+
+  function showmsg()
+  {
+      document.getElementById('msg').style.display = "block";
+  }
+
+
+  function hidemsg()
+  {
+      document.getElementById('msg').style.display = "none";
+  }
+
+  function openOption(name) {
+    
+    //Initialize all displays to none
+    var ele = document.getElementsByClassName("section");
+    for (var i = 0; i < ele.length; i++) {
+       ele[i].style.display = "none"; 
+    }
+
+    if(name.localeCompare("Login") == 0)
+    {
+        document.getElementById('logintab').style.borderBottom = "2px solid {{color}}";
+        document.getElementById('registertab').style.border = "0px";
+    }
+    else
+    {
+        document.getElementById('registertab').style.borderBottom = "2px solid {{color}}";
+        document.getElementById('logintab').style.border = "0px";
+    }
+
+    document.getElementById(name).style.display = "block";  
+  }
+  
+  </script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Miner</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- Font Awesome cdn -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Font Awesome cdn -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="../static/css/normalize.css">
+  <link rel="stylesheet" href="../static/css/skeleton.css">
+  <link rel="stylesheet" href="../static/css/middle.css">
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="../static/images/favicon.png">
+
+ 
+  <style>
+
+  #box{
+    text-align: center;
+    vertical-align: middle;
+    padding:20px;
+    border: 2px solid {{color}};
+    border-radius: 12px;
+  }
+
+  #submitform{
+    background-color: {{color}};
+  }
+
+  #footerbuttons{
+    padding:5px;
+    color:grey;
+    margin-bottom: 0px; 
+    border: 0px;
+  }
+
+  #footerbuttons:hover{
+    font-size: 12px;
+  }
+  
+  </style>
+
+    <!-- Add new choice onclick -->
+  <script type="text/javascript">
+  var count = 3;
+  function addInput(){
+          document.getElementById('dynamicInput').innerHTML += ('<input maxlength = "18" name = "choice' + count + '" class="u-full-width" type="text" placeholder="Choice ' + String(count) + ' (Optional) "/>');
+          count ++;
+
+          if(count == 5)
+          {
+            //Display none when 4 choices are taken
+            document.getElementById('addchoice').style.display = "none";
+          }
+  }
+
+
+  function showmsg()
+  {
+      document.getElementById('msg').style.display = "block";
+  }
+
+
+  function hidemsg()
+  {
+      document.getElementById('msg').style.display = "none";
+  }
+
+  </script>
+</head>
+
+<body>
+
+
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <p style = "text-align:center;font-size:25px;padding-bottom:0px;"><a style = "color:{{color}};text-decoration:none;" href = "/">Miner</a></p>
+      
+      <div id = "box">
+          <form method = "POST" action="addpoll">
+            <div class="row">
+              <div class="twelve columns ">
+                <label align="left">Poll Question</label>
+                <input name = "pollquestion" class="u-full-width" type="text" placeholder="Poll Question">
+              </div>
+            </div>
+          </br>
+            <label align="left">Choices</label>
+            <div id = "dynamicInput">
+              <input name = "choice1" maxlength = "18" class="u-full-width" type="text" placeholder="Choice 1">
+              <input name = "choice2" maxlength = "18" class="u-full-width" type="text" placeholder="Choice 2">     
+            </div>
+            <input id = "addchoice" class="button" type="Button" value=" + Add another Choice" onclick = "addInput()"/>
+
+            <input id = "submitform" class = "button-primary" style = "background-color:{{color}};border:1px solid {{color}}"type = "submit" value = "Submit" />
+        </form>
+
+        {% if error != "" %}
+          {{error}}
+        {% endif %}
+
+        <i class="fa fa-question-circle-o u-pull-right" aria-hidden="true" onmouseover = "showmsg()" onmouseout = "hidemsg()"></i>
+        <div id = "msg" style = "display:none;">
+          The questions you submit will be reveiwed before adding it to the Questions Database  
+        </div>
+      </div>     
+
+     <footer class="footer" style = "text-align:center;padding-top:20px;">
+      <p style="text-decoration:none;">
+        <a class = "button" id = "footerbuttons" href = "/"><i style = "font-size:15px;" class="fa fa-home" aria-hidden="true"></i></a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/yourpolls">Your Polls</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/answeredpolls">Answered Polls</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/addpoll">New Poll</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons"  href = "/logout">Logout</a>
+      </p>  
+    </footer>
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+</body>
+</html>

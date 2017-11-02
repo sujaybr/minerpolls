@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Miner</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- Font Awesome cdn -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="../static/css/normalize.css">
+  <link rel="stylesheet" href="../static/css/skeleton.css">
+  <link rel="stylesheet" href="../static/css/middle.css">
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="../static/images/favicon.png">
+
+ 
+  <style>
+
+  #box{
+    border: 2px solid {{color}};
+    text-align: center;
+    vertical-align: middle;
+    padding:20px;
+    border-radius: 12px;
+  }
+
+ #footerbuttons{
+    padding:5px;
+    color:grey;
+    margin-bottom: 0px; 
+    border: 0px;
+  }
+
+  #footerbuttons:hover{
+    font-size: 12px;
+  }
+
+  #projectname{
+    font-size:25px;
+    text-decoration: none;
+    padding-bottom:0px;
+    color:{{color}}
+  }
+
+  footer{
+    text-align: center;
+  }
+
+  #navfooter{
+    padding-top: 100px;
+  }
+  </style>
+
+</head>
+
+<body>
+
+
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <p style = "text-align:center;font-size:25px;padding-bottom:0px;"><a style = "color:{{color}};text-decoration:none;" href = "/">Miner</a></p>
+      
+      <div id = "box" class = "twelve columns">
+        <div>
+          That's all the questions there is for now!
+        </div>
+        </br>
+        <div>
+          <a class="" id = "newpoll" style="text-decoration:none" href="/addpoll">Click here to add a new Poll Question</a>
+        </div>
+      </div>
+  
+     <footer class="footer" style = "text-align:center;padding-top:20px;">
+      <p style="text-decoration:none;">
+        <a class = "button" id = "footerbuttons" href = "/"><i style = "font-size:15px;" class="fa fa-home" aria-hidden="true"></i></a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/yourpolls">Your Polls</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/answeredpolls">Answered Polls</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons" href = "/addpoll">New Poll</a>
+        <!-- // -->
+        <a class = "button" id = "footerbuttons"  href = "/logout">Logout</a>
+      </p>  
+    </footer>
+
+  </div>
+
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+</body>
+</html>
